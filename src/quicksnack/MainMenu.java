@@ -27,9 +27,9 @@ public class MainMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        loginField = new javax.swing.JTextField();
         passwordField = new javax.swing.JTextField();
         loginButton = new javax.swing.JButton();
+        userSelect = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -40,6 +40,8 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
+        userSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Адміністратор", "Менеджер", "Касир" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -47,16 +49,16 @@ public class MainMenu extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(58, 58, 58)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(loginField)
                     .addComponent(passwordField)
-                    .addComponent(loginButton, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE))
-                .addContainerGap(54, Short.MAX_VALUE))
+                    .addComponent(loginButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(userSelect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(44, 44, 44)
-                .addComponent(loginField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(userSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -68,13 +70,23 @@ public class MainMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        if ((loginField.getText().equals("admin")) && (passwordField.getText().equals("1234"))){
+        if ((userSelect.getSelectedItem().equals("Адміністратор")) && (passwordField.getText().equals("1111"))){
             loginButton.setText("Win!");
             this.setVisible(false);
-            new MyForm().setVisible(true);
+            new AdminForm().setVisible(true);
+        }
+        else if ((userSelect.getSelectedItem().equals("Менеджер")) && (passwordField.getText().equals("2222"))){
+            loginButton.setText("Win!");
+            this.setVisible(false);
+            new ManagerForm().setVisible(true);
+        }
+        else if ((userSelect.getSelectedItem().equals("Касир")) && (passwordField.getText().equals("3333"))){
+            loginButton.setText("Win!");
+            this.setVisible(false);
+            new CashierForm().setVisible(true);
         }
         else{
-            loginField.setText("");
+            //loginField.setText("");
             passwordField.setText("");
             loginButton.setText("Fail :(");
         }
@@ -118,7 +130,7 @@ public class MainMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton loginButton;
-    private javax.swing.JTextField loginField;
     private javax.swing.JTextField passwordField;
+    private javax.swing.JComboBox<String> userSelect;
     // End of variables declaration//GEN-END:variables
 }

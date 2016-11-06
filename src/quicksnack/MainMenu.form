@@ -26,11 +26,11 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="loginField" max="32767" attributes="0"/>
                   <Component id="passwordField" alignment="0" max="32767" attributes="0"/>
-                  <Component id="loginButton" alignment="0" pref="90" max="32767" attributes="0"/>
+                  <Component id="loginButton" alignment="0" max="32767" attributes="0"/>
+                  <Component id="userSelect" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace pref="54" max="32767" attributes="0"/>
+              <EmptySpace pref="35" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -38,7 +38,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-              <Component id="loginField" min="-2" max="-2" attributes="0"/>
+              <Component id="userSelect" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="passwordField" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -49,8 +49,6 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JTextField" name="loginField">
-    </Component>
     <Component class="javax.swing.JTextField" name="passwordField">
     </Component>
     <Component class="javax.swing.JButton" name="loginButton">
@@ -60,6 +58,20 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loginButtonActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="userSelect">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="3">
+            <StringItem index="0" value="&#x410;&#x434;&#x43c;&#x456;&#x43d;&#x456;&#x441;&#x442;&#x440;&#x430;&#x442;&#x43e;&#x440;"/>
+            <StringItem index="1" value="&#x41c;&#x435;&#x43d;&#x435;&#x434;&#x436;&#x435;&#x440;"/>
+            <StringItem index="2" value="&#x41a;&#x430;&#x441;&#x438;&#x440;"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
