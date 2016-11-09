@@ -5,19 +5,50 @@
  */
 package quicksnack;
 
+import java.sql.DriverManager;
+import java.sql.*;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Andrew Sh
  */
 public class AdminForm extends javax.swing.JFrame {
-
+    
+    Connection con;
+    Statement stmt;
+    ResultSet rs;
     /**
      * Creates new form AdminForm
      */
     public AdminForm() {
         initComponents();
+        DoConnect();
     }
-
+    
+    
+    public void DoConnect(){
+        try {
+        String host = "jdbc:derby://localhost:1527/jopadb [jopa on JOPA]";
+        String uname = "jopa";
+        String upass = "1234";
+        con = DriverManager.getConnection(host, uname, upass);
+        
+        stmt = con.createStatement();
+        String SQL = "SELECT * FROM JOPATABLE";
+        rs = stmt.executeQuery(SQL);
+        
+        rs.next();
+        String first_name = rs.getString("name");
+        String last_name = rs.getString("surname");
+        
+        jTextField1.setText(first_name);
+        jTextField2.setText(last_name);
+     }
+    catch (SQLException err){
+        jTextField1.setText("ERROR");
+        jTextField2.setText("ERROR");
+     }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,10 +59,22 @@ public class AdminForm extends javax.swing.JFrame {
     private void initComponents() {
 
         userLabel = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         userLabel.setText("Користувач: Адміністратор");
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jTextField2.setToolTipText("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -39,19 +82,42 @@ public class AdminForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(userLabel)
-                .addContainerGap(319, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(userLabel)
+                        .addContainerGap(319, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField2)
+                            .addComponent(jTextField1))
+                        .addGap(139, 139, 139))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(userLabel)
-                .addContainerGap(348, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23)
+                .addComponent(jButton1)
+                .addContainerGap(220, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        DoConnect();
+    
+
+           
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -84,11 +150,15 @@ public class AdminForm extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new AdminForm().setVisible(true);
+                
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables
 }
