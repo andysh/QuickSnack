@@ -5,18 +5,23 @@
  */
 package quicksnack;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.*;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author Andrew Sh
  */
 public class AdminForm extends javax.swing.JFrame {
-    
+
     Connection con;
     Statement stmt;
     ResultSet rs;
+
     /**
      * Creates new form AdminForm
      */
@@ -24,31 +29,31 @@ public class AdminForm extends javax.swing.JFrame {
         initComponents();
         DoConnect();
     }
-    
-    
-    public void DoConnect(){
+
+    public void DoConnect() {
         try {
-        String host = "jdbc:derby://localhost:1527/jopadb [jopa on JOPA]";
-        String uname = "jopa";
-        String upass = "1234";
-        con = DriverManager.getConnection(host, uname, upass);
-        
-        stmt = con.createStatement();
-        String SQL = "SELECT * FROM JOPATABLE";
-        rs = stmt.executeQuery(SQL);
-        
-        rs.next();
-        String first_name = rs.getString("name");
-        String last_name = rs.getString("surname");
-        
-        jTextField1.setText(first_name);
-        jTextField2.setText(last_name);
-     }
-    catch (SQLException err){
-        jTextField1.setText("ERROR");
-        jTextField2.setText("ERROR");
-     }
+            String host = "jdbc:derby://localhost:1527/Base";
+            String uname = "qwer";
+            String upass = "1234";
+            con = DriverManager.getConnection(host, uname, upass);
+
+            stmt = con.createStatement();
+            String SQL = "SELECT * FROM USERS";
+            rs = stmt.executeQuery(SQL);
+
+            rs.next();
+            String first_name = rs.getString("NAME");
+            String last_name = rs.getString("PASS");
+
+            jTextField1.setText(first_name);
+            jTextField2.setText(last_name);
+        } catch (SQLException err) {
+            JOptionPane.showMessageDialog(this, err.getMessage());
+            jTextField1.setText("ERROR");
+            jTextField2.setText("ERROR");
+        }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -114,9 +119,8 @@ public class AdminForm extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         DoConnect();
-    
 
-           
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -150,7 +154,7 @@ public class AdminForm extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new AdminForm().setVisible(true);
-                
+
             }
         });
     }
