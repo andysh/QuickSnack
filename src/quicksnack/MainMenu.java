@@ -7,6 +7,9 @@ package quicksnack;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Andrew Sh
@@ -16,8 +19,12 @@ public class MainMenu extends javax.swing.JFrame {
     /**
      * Creates new form MainMenu
      */
-    public MainMenu() {
+    public MainMenu() throws SQLException {
         initComponents();
+       // boolean Logg=false;
+        userSelect.setVisible(false);
+     //  new dbconnect().SetConnect();
+      // new dbconnect().SetConnectAdmin(passwordField.getText() ,   loginField.getText());
     }
 
     /**
@@ -32,8 +39,15 @@ public class MainMenu extends javax.swing.JFrame {
         passwordField = new javax.swing.JTextField();
         loginButton = new javax.swing.JButton();
         userSelect = new javax.swing.JComboBox<>();
+        loginField = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         loginButton.setText("OK");
         loginButton.addActionListener(new java.awt.event.ActionListener() {
@@ -49,6 +63,12 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
+        loginField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -58,27 +78,54 @@ public class MainMenu extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(passwordField)
                     .addComponent(loginButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(userSelect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(224, Short.MAX_VALUE))
+                    .addComponent(userSelect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(loginField, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(222, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(74, 74, 74))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
+                .addComponent(jLabel1)
+                .addGap(25, 25, 25)
                 .addComponent(userSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(loginField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(loginButton)
-                .addContainerGap(203, Short.MAX_VALUE))
+                .addContainerGap(205, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        if ((userSelect.getSelectedItem().equals("Адміністратор")) && (passwordField.getText().equals("1111"))){
-            loginButton.setText("Win!");
+        
+     
+      String b;
+        try {
+            b = new dbconnect().SetConnectAdmin(passwordField.getText() ,   loginField.getText());
+         if (b.equals("no")) loginButton.setText("2222222222"); else
+         {
+            // loginButton.setText(new dbconnect().g);
+          //  jLabel1.setText(new dbconnect().g); 
+            this.setVisible(false);
+            new AdminForm().setVisible(true);
+            // loginButton.setText("3333");
+         }
+         
+        } catch (SQLException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+       /* if (new dbconnect().logged==true){
+            loginButton.setText(new dbconnect().g);
+            jLabel1.setText(new dbconnect().g); 
             this.setVisible(false);
             new AdminForm().setVisible(true);
         }
@@ -95,13 +142,28 @@ public class MainMenu extends javax.swing.JFrame {
         else{
             //loginField.setText("");
             passwordField.setText("");
+            jLabel1.setText(new dbconnect().g); 
             loginButton.setText("Fail :(");
         }
+        */
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void userSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userSelectActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_userSelectActionPerformed
+
+    private void loginFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_loginFieldActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        try {
+            new dbconnect().SetConnect();
+        } catch (SQLException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      // new dbconnect().SetConnectAdmin(passwordField.getText() ,   loginField.getText());        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -133,14 +195,20 @@ public class MainMenu extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainMenu().setVisible(true);
-                //Adolf
+                try {
+                    new MainMenu().setVisible(true);
+                    
+                } catch (SQLException ex) {
+                    //JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JButton loginButton;
+    private javax.swing.JTextField loginField;
     private javax.swing.JTextField passwordField;
     private javax.swing.JComboBox<String> userSelect;
     // End of variables declaration//GEN-END:variables
