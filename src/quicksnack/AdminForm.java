@@ -28,6 +28,9 @@ public class AdminForm extends javax.swing.JFrame {
     public AdminForm() {
         initComponents();
         DoConnect();
+        String Base = "USERS";
+        
+        
     }
 
     public void DoConnect() {
@@ -45,11 +48,11 @@ public class AdminForm extends javax.swing.JFrame {
             String first_name = rs.getString("NAME");
             String last_name = rs.getString("PASS");
 
-            jTextField1.setText(first_name);
+            login.setText(first_name);
             jTextField2.setText(last_name);
         } catch (SQLException err) {
             JOptionPane.showMessageDialog(this, err.getMessage());
-            jTextField1.setText("ERROR");
+            login.setText("ERROR");
             jTextField2.setText("ERROR");
         }
     }
@@ -65,7 +68,7 @@ public class AdminForm extends javax.swing.JFrame {
 
         userLabel = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        login = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -96,7 +99,7 @@ public class AdminForm extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jTextField2)
-                            .addComponent(jTextField1))
+                            .addComponent(login))
                         .addGap(139, 139, 139))))
         );
         layout.setVerticalGroup(
@@ -105,7 +108,7 @@ public class AdminForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(userLabel)
                 .addGap(29, 29, 29)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23)
@@ -169,8 +172,8 @@ public class AdminForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField login;
     private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables
 }
