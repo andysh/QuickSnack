@@ -4,15 +4,16 @@
  * and open the template in the editor.
  */
 package quicksnack;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 /**
  *
  * @author Andrew Sh
  */
 public class MainMenu extends javax.swing.JFrame {
-
+    static final String DB_URL = "jdbc:derby://localhost:1527/Base";
+    
+    static final String USER = "qwer";
+    static final String PASS = "1234";
     /**
      * Creates new form MainMenu
      */
@@ -32,6 +33,8 @@ public class MainMenu extends javax.swing.JFrame {
         passwordField = new javax.swing.JTextField();
         loginButton = new javax.swing.JButton();
         userSelect = new javax.swing.JComboBox<>();
+        loginField = new javax.swing.JTextField();
+        resText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -49,59 +52,145 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
+        loginField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(passwordField)
-                    .addComponent(loginButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(userSelect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(224, Short.MAX_VALUE))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(userSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(loginField, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(62, 62, 62)
+                        .addComponent(resText, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(userSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(84, 84, 84)
+                        .addComponent(loginField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(105, 105, 105)
+                        .addComponent(resText, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(loginButton)
-                .addContainerGap(203, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
+                .addComponent(userSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        if ((userSelect.getSelectedItem().equals("Адміністратор")) && (passwordField.getText().equals("1111"))){
+       Connection conn = null;
+       Statement stmt = null;
+       try{
+        //STEP 2: Register JDBC driver
+        //Class.forName("com.mysql.jdbc.Driver");
+
+        //STEP 3: Open a connection
+        conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        System.out.println("Connected database successfully...");
+
+        //STEP 4: Execute a query
+        System.out.println("Creating statement...");
+        stmt = conn.createStatement();
+
+        String sql = "SELECT NAME, PASS FROM USERS";
+        ResultSet rs = stmt.executeQuery(sql);
+        //STEP 5: Extract data from result set
+        while(rs.next()){
+           //Retrieve by column name
+           String first = rs.getString("NAME");
+           String last = rs.getString("PASS");
+           
+           //Display values
+           //System.out.print(", First: " + first);
+           //System.out.println(", Last: " + last);
+           if ((loginField.getText().equals(first)) && (passwordField.getText().equals(last))){
             loginButton.setText("Win!");
-            this.setVisible(false);
-            new AdminForm().setVisible(true);
+            resText.setText("logged as: " + first);
+            System.out.print("record found");
+            break;
+           }
+           else {
+               loginButton.setText("Fail!");
+                resText.setText("");
+                System.out.print("record not found");
+           }
         }
-        else if ((userSelect.getSelectedItem().equals("Менеджер")) && (passwordField.getText().equals("2222"))){
-            loginButton.setText("Win!");
-            this.setVisible(false);
-            new ManagerForm().setVisible(true);
-        }
-        else if ((userSelect.getSelectedItem().equals("Касир")) && (passwordField.getText().equals("3333"))){
-            loginButton.setText("Win!");
-            this.setVisible(false);
-            new CashierForm().setVisible(true);
-        }
-        else{
-            //loginField.setText("");
-            passwordField.setText("");
-            loginButton.setText("Fail :(");
-        }
+        rs.close();
+        }catch(SQLException se){
+           //Handle errors for JDBC
+           se.printStackTrace();
+        }catch(Exception e){
+           //Handle errors for Class.forName
+           e.printStackTrace();
+        }finally{
+           //finally block used to close resources
+           try{
+              if(stmt!=null)
+                 conn.close();
+           }catch(SQLException se){
+           }// do nothing
+           try{
+              if(conn!=null)
+                 conn.close();
+           }catch(SQLException se){
+              se.printStackTrace();
+           }//end finally try
+       }//end try
+       System.out.println("Goodbye!");
+        
+        
+        
+        
+//        if ((userSelect.getSelectedItem().equals("Адміністратор")) && (passwordField.getText().equals("1111"))){
+//            loginButton.setText("Win!");
+//            this.setVisible(false);
+//            new AdminForm().setVisible(true);
+//        }
+//        else if ((userSelect.getSelectedItem().equals("Менеджер")) && (passwordField.getText().equals("2222"))){
+//            loginButton.setText("Win!");
+//            this.setVisible(false);
+//            new ManagerForm().setVisible(true);
+//        }
+//        else if ((userSelect.getSelectedItem().equals("Касир")) && (passwordField.getText().equals("3333"))){
+//            loginButton.setText("Win!");
+//            this.setVisible(false);
+//            new CashierForm().setVisible(true);
+//        }
+//        else{
+//            //loginField.setText("");
+//            passwordField.setText("");
+//            loginButton.setText("Fail :(");
+//        }
+        
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void userSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userSelectActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_userSelectActionPerformed
+
+    private void loginFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_loginFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -141,7 +230,9 @@ public class MainMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton loginButton;
+    private javax.swing.JTextField loginField;
     private javax.swing.JTextField passwordField;
+    private javax.swing.JLabel resText;
     private javax.swing.JComboBox<String> userSelect;
     // End of variables declaration//GEN-END:variables
 }

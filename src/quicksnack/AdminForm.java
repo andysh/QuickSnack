@@ -72,7 +72,7 @@ public class AdminForm extends javax.swing.JFrame {
 
         userLabel.setText("Користувач: Адміністратор");
 
-        jButton1.setText("jButton1");
+        jButton1.setText("next");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -118,9 +118,17 @@ public class AdminForm extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        DoConnect();
+//        DoConnect();
+         try {
+            rs.next();
+            String first_name = rs.getString("NAME");
+            String last_name = rs.getString("PASS");
 
-
+            jTextField1.setText(first_name);
+            jTextField2.setText(last_name);
+        } catch (SQLException err) {
+            JOptionPane.showMessageDialog(this, err.getMessage());
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
